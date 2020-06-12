@@ -2,23 +2,23 @@ import sys
 import requests
 from bs4 import BeautifulSoup
 import os
-
+import fire
 
 """
 枚数の計算処理がおぞくなっているが大方OK
 """
 
 class Downloader:
-    def __init__(self,keyword,dirname,cnt):
-        if os.path.exists(dirname):
+    def __init__(self,keyword ,cnt):
+        self.dirname = keyword 
+        self.keyword = keyword
+        self.cnt = cnt
+        if os.path.exists(keyword):
             pass
             print("Specified Directory ")
         else:
             print("Create new file")
-            os.mkdir(dirname)
-        self.dirname = dirname
-        self.keyword = keyword
-        self.cnt = cnt
+            os.mkdir(keyword)
 
     def download(self, url, filepath):
         binary = requests.get(url, stream=True)
@@ -38,6 +38,7 @@ class Downloader:
             last_page_cnt = cnt - 60*pages
         else:
             pages = 1
+            last_page_cnt = cnt
         # http requests
         img_urls = []
         for page in range(pages):
@@ -53,7 +54,6 @@ class Downloader:
                 img_urls.append(url_tmp)
         return img_urls
 
-
     def main(self):
         urls = self.get_urls(self.keyword, self.cnt)
         filenum = 0
@@ -62,5 +62,10 @@ class Downloader:
             self.download(url, filename)
             filenum += 1
 
-downloader = Downloader("ボール","ball",100)
-downloader.main()
+def driver(keyword, cnt):
+    downloader = Downloader(keyword, cnt)
+    downloader.main()
+
+
+if __name__ == "__main__":
+    fire.Fire(driver)
