@@ -1,5 +1,0 @@
-# Image Downloader
-## Usage
-ex)
-python downloader.py --keyword face --cnt 60
-
