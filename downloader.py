@@ -10,6 +10,7 @@ import fire
 
 class Downloader:
     def __init__(self,keyword ,cnt):
+        self.URLS = list()
         self.dirname = keyword 
         self.keyword = keyword
         self.cnt = cnt
@@ -52,6 +53,8 @@ class Downloader:
             img_urls_tmp = [e.get("src") for e in img_tags]
             for url_tmp in img_urls_tmp:
                 img_urls.append(url_tmp)
+                if not img_urls in self.URLS:
+                    self.URLS.append(img_urls)
         return img_urls
 
     def main(self):
